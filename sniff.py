@@ -13,7 +13,7 @@ def sniff(config):
         makedirs(pcaps_folder)
 
     tshark_call = "tshark -i {} -b filesize:{} -w {}\\{} -B 20".format(
-        interface, pcap_kb_filesize, pcaps_folder, pcaps_file_name, bpf_filter)
+        interface, pcap_kb_filesize, pcaps_folder, pcaps_file_name)
     try:
         print("Sniffing Started")
         call(['cmd', '/c', tshark_call])
