@@ -1,7 +1,6 @@
 from dpkt.pcapng import Reader as PCAPReader
 from json_packet import JsonPacket
-from os import listdir, rename, makedirs, remove
-from os.path import exists
+from os import listdir, rename, remove
 from pathlib import Path
 from json import dump
 from traceback import print_exc

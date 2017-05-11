@@ -1,9 +1,8 @@
-from os.path import exists
 from paramiko import SSHClient, AutoAddPolicy
 from scp import SCPClient
-from pathlib import Path, PosixPath
+from pathlib import Path
 from zipfile import ZipFile, ZIP_BZIP2
-from os import remove, makedirs
+from os import remove
 
 
 class Sender:
@@ -18,7 +17,6 @@ class Sender:
                          password=config['RELAY_SERVER']['password'])
         self.scp = SCPClient(self.ssh.get_transport())
         self.delete_completed = bool(config['GENERAL']['delete_completed'])
-
 
     def send(self, file_to_send: Path):
         self.scp.put(str(file_to_send), str(self.relay_pcaps_folder.as_posix()))

@@ -1,6 +1,5 @@
 from subprocess import call
-from os.path import exists
-from os import makedirs
+
 
 def sniff(config):
 
@@ -16,6 +15,3 @@ def sniff(config):
         call(['cmd', '/c', tshark_call])
     except KeyboardInterrupt:
         print("Sniffing Stopped")
-
-if __name__ == "__main__":
-    sniff()

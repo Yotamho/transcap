@@ -1,7 +1,7 @@
 from dpkt.dpkt import Packet, UnpackError, NeedData
 from dpkt.ethernet import Ethernet
 from dpkt.ip import IP
-from dpkt.tcp import TCP, parse_opts
+from dpkt.tcp import TCP
 from dpkt.udp import UDP
 from dpkt.http import Request as HTTPRequest
 from dpkt.http import Response as HTTPResponse
@@ -11,10 +11,7 @@ class JsonPacket:
 
     def __init__(self, packet: Packet, ts, packet_number):
         self.packet = packet
-        self.dict = {}
-
-        self.dict['timestamp'] = ts
-        self.dict['num'] = packet_number
+        self.dict = {'timestamp': ts, 'num': packet_number}
 
         eth = Ethernet(self.packet)
         self.dict['smac'] = str(eth.src)
