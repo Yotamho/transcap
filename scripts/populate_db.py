@@ -24,22 +24,23 @@ for table in tables_list:
                                                  .format(db_keyspace, table))
 
 
-def unzip(file_name):
-    zipfile = ZipFile(file_name)
+def unzip(zip_path: Path):
+    zipfile = ZipFile(str(zip_path))
     zipfile.extractall()
-    remove(file_name)
+    remove(str(zip_path))
 
 
 def insert_all(json_path):
-    with open(json_path, 'r') as json_file:
+    with open(str(json_path), 'r') as json_file:
         table_name = json_path.name[json_path.name.find('_')]
         for line in json_file:
             json_entry = loads(line)
             session.execute(prepared_statements[table_name], [json_entry['timestamp'], json_entry['num'], line])
+        remove(str(json_path))
 
 if __name__ == "__main__":
     while True:
-        for file in listdir(db_server_pcaps_folder):
+        for file in listdir(str(db_server_pcaps_folder)):
             if file.endswith('.zip'):
                 file_path = db_server_pcaps_folder / file
                 unzip(file_path)
