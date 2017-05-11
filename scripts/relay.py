@@ -9,7 +9,7 @@ class Relay:
 
     def __init__(self):
         config = ConfigParser()
-        config.read('config.ini')
+        config.read(Path.cwd().parent / 'real_config.ini')
 
         self.relay_pcaps_folder = Path(config['RELAY_SERVER']['pcaps_folder'])
         self.db_server_pcaps_folder = Path(config['DB_SERVER']['pcaps_folder'])
