@@ -22,7 +22,8 @@ class Sender:
         self.scp.put(str(file_to_send), str(self.relay_pcaps_folder.as_posix()))
         print('Sent ' + file_to_send.name)
         file_server_path = self.relay_pcaps_folder / file_to_send.name
-        self.ssh.exec_command('mv {} {}'.format(file_server_path, file_server_path.with_suffix('.readyzip')))
+        self.ssh.exec_command('mv {} {}'.format(file_server_path.as_posix(),
+                                                file_server_path.with_suffix('.readyzip').as_posix()))
         if self.delete_completed:
             remove(file_to_send)
         print('Renamed')
