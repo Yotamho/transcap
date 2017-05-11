@@ -9,9 +9,6 @@ def sniff(config):
     pcaps_folder = config["GENERAL"]["pcaps_folder"]
     pcaps_file_name = config["GENERAL"]["pcaps_file_name"]
 
-    if not exists(pcaps_folder):
-        makedirs(pcaps_folder)
-
     tshark_call = "tshark -i {} -b filesize:{} -w {}\\{} -B 20".format(
         interface, pcap_kb_filesize, pcaps_folder, pcaps_file_name)
     try:
