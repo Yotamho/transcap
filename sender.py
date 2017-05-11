@@ -2,7 +2,7 @@ from paramiko import SSHClient, AutoAddPolicy
 from scp import SCPClient
 from pathlib import Path
 from zipfile import ZipFile, ZIP_BZIP2
-from os import remove
+from os import remove, rename
 
 
 class Sender:
@@ -19,13 +19,18 @@ class Sender:
         self.delete_completed = bool(config['GENERAL']['delete_completed'])
 
     def send(self, file_to_send: Path):
-        self.scp.put(str(file_to_send), str(self.relay_pcaps_folder.as_posix()))
-        print('Sent ' + file_to_send.name)
-        file_server_path = self.relay_pcaps_folder / file_to_send.name
-        self.ssh.exec_command('mv {} {}'.format(file_server_path.as_posix(),
-                                                file_server_path.with_suffix('.readyzip').as_posix()))
+        temp_file_to_send = file_to_send.with_suffix('.tempzip')
+        rename(file_to_send, temp_file_to_send)
+        self.scp.put(str(temp_file_to_send), str(self.relay_pcaps_folder.as_posix()))
+        print('Sent ' + temp_file_to_send.name)
+        file_server_path = self.relay_pcaps_folder / temp_file_to_send.name
+
         if self.delete_completed:
-            remove(file_to_send)
+            remove(temp_file_to_send)
+
+        self.ssh.exec_command('mv {} {}'.format(file_server_path.as_posix(),
+                                                file_server_path.with_suffix('.zip').as_posix()))
+
         print('Renamed')
 
     def zip(self, file_to_zip: Path):
