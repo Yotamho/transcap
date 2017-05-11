@@ -59,7 +59,7 @@ class JsonPacket:
                             pass
                         try:
                             self.dict['uri'] = http.uri
-                        except (AttributeError):
+                        except AttributeError:
                             pass
                     except (UnpackError, NeedData):
                         pass

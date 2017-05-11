@@ -32,6 +32,7 @@ class Jsonizer:
                         with open(json_path, 'w') as json_file:
                             for json_packet in self._read_file(locked_pcap_path):
                                 self._dump_to_json(json_packet, json_file)
+                                json_file.write('\n')
 
                         if self.delete_completed:
                             remove(locked_pcap_path)
