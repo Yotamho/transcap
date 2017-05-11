@@ -15,7 +15,7 @@ db_address = config['DB_SERVER']['db_address']
 db_keyspace = config['DB_SERVER']['db_keyspace']
 
 # On implementation - use loopback address:
-cluster = Cluster(db_address)
+cluster = Cluster([db_address])
 session = cluster.connect('research')
 
 # Prepare statements:
