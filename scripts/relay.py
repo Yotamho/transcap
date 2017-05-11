@@ -9,7 +9,7 @@ class Relay:
 
     def __init__(self):
         config = ConfigParser()
-        config.read(Path.cwd().parent / 'real_config.ini')
+        config.read(str(Path.cwd().parent / 'real_config.ini'))
 
         self.relay_pcaps_folder = Path(config['RELAY_SERVER']['pcaps_folder'])
         self.db_server_pcaps_folder = Path(config['DB_SERVER']['pcaps_folder'])
@@ -25,8 +25,12 @@ class Relay:
 
     def spool(self):
         while True:
-            for file in os.listdir(self.relay_pcaps_folder):
+            for file in os.listdir(str(self.relay_pcaps_folder)):
                 if file.endswith('.readyzip'):
-                    self.scp.put(self.relay_pcaps_folder / file, self.db_server_pcaps_folder)
+                    self.scp.put(str(self.relay_pcaps_folder / file), str(self.db_server_pcaps_folder))
                     self.ssh.exec_command('mv {} {}'.format(self.db_server_pcaps_folder / file,
-                                                            (self.db_server_pcaps_folder / file).with_suffix('zip')))
+                                                            (self.db_server_pcaps_folder / file).with_suffix('.zip')))
+                    os.remove(str(self.relay_pcaps_folder / file))
+if __name__ == "__main__":
+        relay = Relay()
+        relay.spool()
