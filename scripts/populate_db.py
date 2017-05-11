@@ -11,10 +11,11 @@ config = ConfigParser()
 config.read(config.read(Path.cwd().parent / 'real_config.ini'))
 db_server_pcaps_folder = Path(config['DB_SERVER']['pcaps_folder'])
 tables_list = config['DB_SERVER']['tables'].split(',')
+db_address = config['DB_SERVER']['db_address']
 db_keyspace = config['DB_SERVER']['db_keyspace']
 
 # On implementation - use loopback address:
-cluster = Cluster('10.1.70.50')
+cluster = Cluster(db_address)
 session = cluster.connect('research')
 
 # Prepare statements:
