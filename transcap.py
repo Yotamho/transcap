@@ -35,8 +35,6 @@ if __name__ == '__main__':
     if not exists(zips_folder):
         makedirs(zips_folder)
 
-    # jsonize_and_send(1, config)
-
     sniffer = Process(target=sniff, args=[config])
     sniffer.start()
     for process_number in range(1, total_processes + 1):

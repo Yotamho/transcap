@@ -1,2 +1,5 @@
 # transcap
-A kit for traffic capturing and transportation
+A kit for traffic capturing and parallel transportation
+
+To-Dos:
+[ ] Sniff module use pyshark.LiveRingCapture
