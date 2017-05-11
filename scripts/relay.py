@@ -28,12 +28,12 @@ class Relay:
             for file in os.listdir(str(self.relay_pcaps_folder)):
                 if file.endswith('.zip'):
                     temp_file_to_send = (self.relay_pcaps_folder / file).with_suffix('.tempzip')
-                    os.rename()
+                    os.rename(str(self.relay_pcaps_folder / file), str(temp_file_to_send))
                     self.scp.put(str(temp_file_to_send), str(self.db_server_pcaps_folder))
                     self.ssh.exec_command('mv {} {}'.format(self.db_server_pcaps_folder / temp_file_to_send.name,
                                                             (self.db_server_pcaps_folder / temp_file_to_send.name)
                                                             .with_suffix('.zip')))
-                    os.remove(str(self.relay_pcaps_folder / file))
+                    os.remove(str(temp_file_to_send))
 if __name__ == "__main__":
         relay = Relay()
         relay.spool()
