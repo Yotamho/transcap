@@ -40,5 +40,3 @@ if __name__ == '__main__':
     for process_number in range(1, total_processes + 1):
         spooler = Process(target=jsonize_and_send, args=[process_number, config])
         spooler.start()
-
-
