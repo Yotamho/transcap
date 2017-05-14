@@ -23,12 +23,11 @@ def unzip(zip_path: Path):
 
 def insert_all(json_path):
     with open(str(json_path), 'r') as json_file:
-        table_name = json_path.name[json_path.name.find('_')]
+        table_name = json_path.name[:json_path.name.find('_')]
         for line in json_file:
             json_entry = loads(line)
             binded_statement = prepared_statements[table_name].bind([json_entry['timestamp'], json_entry['num'], line])
             session.execute(binded_statement)
-            print(line)
         remove(str(json_path))
 
 if __name__ == "__main__":
