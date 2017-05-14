@@ -32,23 +32,20 @@ def insert_all(json_path):
         remove(str(json_path))
 
 if __name__ == "__main__":
-    while True:
-        # On implementation - use loopback address:
-        cluster = Cluster([db_address])
-        session = cluster.connect('research')
+    # On implementation - use loopback address:
+    cluster = Cluster([db_address])
+    session = cluster.connect('research')
 
-        # Prepare statements:
-        prepared_statements = {}
-        for table in tables_list:
-            prepared_statements[table] = session.prepare('INSERT INTO {}.{} (ts, packet_number, json) VALUES (?,?,?)'
-                                                         .format(db_keyspace, table))
-        try:
-            while True:
-                for file in listdir(str(db_server_pcaps_folder)):
-                    if file.endswith('.zip'):
-                        file_path = db_server_pcaps_folder / file
-                        unzip(file_path)
-                        json_path = (db_server_jsons_folder / file).with_suffix('.json')
-                        insert_all(json_path)
-        except:
-            pass
+    # Prepare statements:
+    prepared_statements = {}
+    for table in tables_list:
+        prepared_statements[table] = session.prepare('INSERT INTO {}.{} (ts, packet_number, json) VALUES (?,?,?)'
+                                                     .format(db_keyspace, table))
+    try:
+        while True:
+            for file in listdir(str(db_server_pcaps_folder)):
+                if file.endswith('.zip'):
+                    file_path = db_server_pcaps_folder / file
+                    unzip(file_path)
+                    json_path = (db_server_jsons_folder / file).with_suffix('.json')
+                    insert_all(json_path)
