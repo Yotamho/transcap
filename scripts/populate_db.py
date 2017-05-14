@@ -10,13 +10,14 @@ from json import loads
 config = ConfigParser()
 config.read(config.read(Path.cwd().parent / 'real_config.ini'))
 db_server_pcaps_folder = Path(config['DB_SERVER']['pcaps_folder'])
+db_server_jsons_folder = Path(config['DB_SERVER']['jsons_folder'])
 tables_list = config['DB_SERVER']['tables'].split(',')
 db_address = config['DB_SERVER']['db_address']
 db_keyspace = config['DB_SERVER']['db_keyspace']
 
 def unzip(zip_path: Path):
     zipfile = ZipFile(str(zip_path))
-    zipfile.extractall()
+    zipfile.extractall(path=str(db_server_jsons_folder))
     remove(str(zip_path))
 
 
@@ -45,6 +46,7 @@ if __name__ == "__main__":
                     if file.endswith('.zip'):
                         file_path = db_server_pcaps_folder / file
                         unzip(file_path)
-                        insert_all(file_path.with_suffix('.json'))
+                        json_path = (db_server_jsons_folder / file).with_suffix('.json')
+                        insert_all(json_path)
         except:
             pass
