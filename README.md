@@ -6,3 +6,7 @@ To-Dos:
 [ ] Sniff module use pyshark.LiveRingCapture
 
 [ ] Sender use SFTP instead of SCP
+
+[ ] Remove empty jsons (handle in try/except)
+
+[ ] Auto remove files on start
