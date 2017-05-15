@@ -15,6 +15,7 @@ tables_list = config['DB_SERVER']['tables'].split(',')
 db_address = config['DB_SERVER']['db_address']
 db_keyspace = config['DB_SERVER']['db_keyspace']
 
+
 def unzip(zip_path: Path):
     zipfile = ZipFile(str(zip_path))
     zipfile.extractall(path=str(db_server_jsons_folder))
@@ -41,9 +42,20 @@ if __name__ == "__main__":
         prepared_statements[table] = session.prepare('INSERT INTO {}.{} (ts, packet_number, json) VALUES (?,?,?)'
                                                      .format(db_keyspace, table))
     while True:
-        for file in listdir(str(db_server_pcaps_folder)):
-            if file.endswith('.zip'):
-                file_path = db_server_pcaps_folder / file
-                unzip(file_path)
-                json_path = (db_server_jsons_folder / file).with_suffix('.json')
-                insert_all(json_path)
+        try:
+            for file in listdir(str(db_server_pcaps_folder)):
+                if file.endswith('.zip'):
+                    file_path = db_server_pcaps_folder / file
+                    unzip(file_path)
+                    json_path = (db_server_jsons_folder / file).with_suffix('.json')
+                    insert_all(json_path)
+        except Exception as e:
+            cluster = Cluster([db_address])
+            session = cluster.connect('research')
+
+            # Prepare statements:
+            prepared_statements = {}
+            for table in tables_list:
+                prepared_statements[table] = session.prepare(
+                    'INSERT INTO {}.{} (ts, packet_number, json) VALUES (?,?,?)'
+                    .format(db_keyspace, table))
