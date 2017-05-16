@@ -10,3 +10,5 @@ To-Dos:
 [ ] Remove empty jsons (handle in try/except)
 
 [ ] Auto remove files on start
+
+[ ] Implement application classification
